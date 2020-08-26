@@ -6,5 +6,12 @@ Created on August 16 2020
 
 *Files used*: bikeshare.py, chicago.csv, new_york_city.csv
 
-### Credits
-It's important to give proper credit. Add links to any repo that inspired you or blogposts you consulted.
+*Credits*:
+Udacity course 'Programming for Data Science with Python'
+https://www.udacity.com/course/programming-for-data-science-nanodegree--nd104
+
+Python standard library reference
+https://docs.python.org/3/library/index.html#library-index
+
+Pandas API reference
+https://pandas.pydata.org/docs/reference/index.html#api
