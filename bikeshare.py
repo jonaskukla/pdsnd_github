@@ -24,13 +24,13 @@ def print_current_filter(cities, months, days):
                 all = False # if any city is missing from the filter, 'all' is set to False
         # if all cities are in the filter, print "Cities: all,"
         if all == True:
-            print('\n' + cat.capitalize() + ': all', end=', ')
+            print('\n' + cat.capitalize() + ': all', end=', ') # e.g. 'Cities: all,'
         # if only a part of the cities is in the filter, print only these city names
         else:
-            print('\n' + cat.capitalize(), end=': ')
+            print('\n' + cat.capitalize(), end=': ') # e.g. 'Cities: '
             for entry in categories[cat]:
-                if categories[cat][entry] == True:
-                    print(entry.capitalize(), end=', ')
+                if categories[cat][entry] == True: # if city is in filter
+                    print(entry.capitalize(), end=', ') # e.g. 'Chicago, '
     print('\n')
 
 def change_filters(cities, months, days):
