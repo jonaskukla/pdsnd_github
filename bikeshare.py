@@ -43,56 +43,56 @@ def change_filters(cities, months, days):
         (dict) days - a dictionary indicating for each day of week if it is in the filter (True) or not (False)
     """
 
-    categories = {'cities': cities, 'months': months, 'days': days} # auxiliary dictionary to refer from string names to dictionaries
+    filter_dict = {'cities': cities, 'months': months, 'days': days} # auxiliary dictionary to refer from string names to dictionaries
     names = {'cities': 'city', 'months': 'month', 'days': 'day'} # auxiliary dictionary just containing the singular forms
 
-    for cat in categories: # all following examples are for cities, e.g. cat = 'cities'
+    for category in filter_dict: # all following examples are for cities, e.g. category = 'cities'
         while True:
-            print('Enter n to apply no {} filter.'.format(names[cat]))
-            print('Enter a to add a {} to the filter.'.format(names[cat]))
-            print('Enter o to omit a {} from the filter.'.format(names[cat]))
-            print('Enter f to filter for one {} only.'.format(names[cat]))
+            print('Enter n to apply no {} filter.'.format(names[category]))
+            print('Enter a to add a {} to the filter.'.format(names[category]))
+            print('Enter o to omit a {} from the filter.'.format(names[category]))
+            print('Enter f to filter for one {} only.'.format(names[category]))
             change = input('Every other input will leave the filter unchanged: \n')
             print('\n')
             if change == 'n': # apply no filter
-                for entry in categories[cat]: # entry = e.g. chicago
-                    categories[cat][entry] = True # set dictionary value for every city to True
+                for element in filter_dict[category]: # element = e.g. chicago
+                    filter_dict[category][element] = True # set dictionary value for every city to True
             if change == 'a': # add a city to the filter
                 while True:
-                    add = input('To add a {} enter its name: '.format(names[cat])) # ask for city name
-                    if add.lower() in categories[cat]: # check if city name is valid
-                        categories[cat][add.lower()] = True # set dicitonary value for this city to True
+                    add_element = input('To add a {} enter its name: '.format(names[category])) # ask for city name
+                    if add_element.lower() in filter_dict[category]: # check if city name is valid
+                        filter_dict[category][add_element.lower()] = True # set dicitonary value for this city to True
                         break
                     else:
-                        invalid_input_message(categories[cat].keys()) # give user a complete list of valid inputs, e.g. cities
+                        invalid_input_message(filter_dict[category].keys()) # give user a complete list of valid inputs, e.g. cities
             if change == 'o': # omit a city from the filter
                 while True:
-                    omit = input('To omit a {} enter its name: '.format(names[cat])) # ask for city name
-                    if omit.lower() in categories[cat]: # check if city name is valid
-                        categories[cat][omit.lower()] = False # set dictionary value for this city to False
+                    omit_element = input('To omit a {} enter its name: '.format(names[category])) # ask for city name
+                    if omit_element.lower() in filter_dict[category]: # check if city name is valid
+                        filter_dict[category][omit_element.lower()] = False # set dictionary value for this city to False
                         allfalse = True
-                        for entry in categories[cat]: # entry can be e.g. chicago, new york city, washington
-                            if categories[cat][entry] == True:
+                        for element in filter_dict[category]: # element can be e.g. chicago, new york city, washington
+                            if filter_dict[category][element] == True:
                                 allfalse = False # if any city is in the filter, 'allfalse' is set to False
                         if allfalse == True: # check if the omitted city was the last city in the filter
-                            categories[cat][omit.lower()] = True # add the omitted city back to the filter
-                            print('\nCannot omit the last {} from the filter'.format(names[cat]))
+                            filter_dict[category][omit_element.lower()] = True # add the omitted city back to the filter
+                            print('\nCannot omit the last {} from the filter'.format(names[category]))
                         break
                     else:
-                        invalid_input_message(categories[cat].keys()) # give user a complete list of valid inputs, e.g. cities
+                        invalid_input_message(filter_dict[category].keys()) # give user a complete list of valid inputs, e.g. cities
             if change == 'f': # allows user to change filter immediately to one city only
                 while True:
-                    filter = input('To filter for a {} enter its name: '.format(names[cat])) #ask for city name
-                    if filter.lower() in categories[cat]: #check if city name is valid
-                        for entry in categories[cat]:
-                            categories[cat][entry] = False #omit all cities from the filter
-                        categories[cat][filter.lower()] = True #add the specified city back to the filter
+                    filter_element = input('To filter for a {} enter its name: '.format(names[category])) #ask for city name
+                    if filter_element.lower() in filter_dict[category]: #check if city name is valid
+                        for element in filter_dict[category]:
+                            filter_dict[category][element] = False #omit all cities from the filter
+                        filter_dict[category][filter_element.lower()] = True #add the specified city back to the filter
                         break
                     else:
-                        invalid_input_message(categories[cat].keys())
+                        invalid_input_message(filter_dict[category].keys())
             print('\n')
             print_current_filter(cities, months, days) #print current filter settings to give user
-            proceed = input('Enter yes if you are done changing the {0} filter. Otherwise you will continue to change the {0} filter:\n'.format(names[cat]))
+            proceed = input('Enter yes if you are done changing the {0} filter. Otherwise you will continue to change the {0} filter:\n'.format(names[category]))
             print('\n')
             if proceed.lower() == 'yes':
                 break
