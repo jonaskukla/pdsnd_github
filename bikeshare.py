@@ -15,22 +15,22 @@ def invalid_input_message(mylist):
 def print_current_filter(cities, months, days):
     # prints the current filter settings
     print('Current filters:', end='')
-    categories = {'Cities': cities, 'Months': months, 'Days': days}
-    for cat in categories: #e.g. 'Cities'
+    filter_dict = {'Cities': cities, 'Months': months, 'Days': days}
+    for category in filter_dict: #e.g. 'Cities'
         # check if all cities are in filter.
-        all = True
-        for entry in categories[cat]: # entry can be e.g. chicago, new york city, washington
-            if categories[cat][entry] == False:
-                all = False # if any city is missing from the filter, 'all' is set to False
+        all_elements_are_in_filter = True
+        for element in filter_dict[category]: # element can be e.g. chicago, new york city, washington
+            if filter_dict[category][element] == False: # check if any city is missing from the filter
+                all_elements_are_in_filter = False # if yes, 'all_elements_are_in_filter' is set to False
         # if all cities are in the filter, print "Cities: all,"
-        if all == True:
-            print('\n' + cat.capitalize() + ': all', end=', ')
+        if all_elements_are_in_filter == True:
+            print('\n' + category.capitalize() + ': all', end=', ')
         # if only a part of the cities is in the filter, print only these city names
         else:
-            print('\n' + cat.capitalize(), end=': ')
-            for entry in categories[cat]:
-                if categories[cat][entry] == True:
-                    print(entry.capitalize(), end=', ')
+            print('\n' + category.capitalize(), end=': ')
+            for element in filter_dict[category]:
+                if filter_dict[category][element] == True:
+                    print(element.capitalize(), end=', ')
     print('\n')
 
 def change_filters(cities, months, days):
