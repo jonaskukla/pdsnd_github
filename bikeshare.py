@@ -20,16 +20,16 @@ def print_current_filter(cities, months, days):
         # check if all cities are in filter.
         all_elements_are_in_filter = True
         for element in filter_dict[category]: # element can be e.g. chicago, new york city, washington
-            if filter_dict[category][element] == False: # check if any city is missing from the filter
+            if not filter_dict[category][element]: # check if any city is missing from the filter
                 all_elements_are_in_filter = False # if yes, 'all_elements_are_in_filter' is set to False
         # if all cities are in the filter, print "Cities: all,"
-        if all_elements_are_in_filter == True:
+        if all_elements_are_in_filter:
             print('\n' + category.capitalize() + ': all', end=', ')
         # if only a part of the cities is in the filter, print only these city names
         else:
             print('\n' + category.capitalize(), end=': ')
             for element in filter_dict[category]:
-                if filter_dict[category][element] == True:
+                if filter_dict[category][element]:
                     print(element.capitalize(), end=', ')
     print('\n')
 
@@ -72,9 +72,9 @@ def change_filters(cities, months, days):
                         filter_dict[category][omit_element.lower()] = False # set dictionary value for this city to False
                         allfalse = True
                         for element in filter_dict[category]: # element can be e.g. chicago, new york city, washington
-                            if filter_dict[category][element] == True:
+                            if filter_dict[category][element]:
                                 allfalse = False # if any city is in the filter, 'allfalse' is set to False
-                        if allfalse == True: # check if the omitted city was the last city in the filter
+                        if allfalse: # check if the omitted city was the last city in the filter
                             filter_dict[category][omit_element.lower()] = True # add the omitted city back to the filter
                             print('\nCannot omit the last {} from the filter'.format(names[category]))
                         break
@@ -115,7 +115,7 @@ def load_data(cities, months, days):
     # create new DataFrame and add data for all requested cities from the respective files
     df = pd.DataFrame()
     for city in cities:
-        if cities[city] == True:
+        if cities[city]:
             newdf = pd.read_csv(CITY_DATA[city])
             newdf['city'] = city #add an extra column to indicate from which city the respective lines in the DataFrame are
             df = df.append(newdf, sort=False)
@@ -131,14 +131,14 @@ def load_data(cities, months, days):
     monthtonumber = {'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6}
     # instead of True/False dictionary with all month names (e.g. 'january') as keys,
     # define 'months' as list of month numbers (e.g. 1) containing only months in filter
-    months = [monthtonumber[month] for month in months if months[month] == True]
+    months = [monthtonumber[month] for month in months if months[month]]
 
     df = df[df['month'].isin(months)] # filter df to contain only entries with month in filter
 
     daytonumber = {'sunday': 0, 'monday': 1, 'tuesday': 2, 'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6}
     # instead of True/False dictionary with all day names (e.g. 'sunday') as keys,
     # define 'days' as list of day numbers (e.g. 0) containing only days in filter
-    days = [daytonumber[day] for day in days if days[day] == True]
+    days = [daytonumber[day] for day in days if days[day]]
 
     df = df[df['day_of_week'].isin(days)] # filter df to contain only entries with day in filter
 
