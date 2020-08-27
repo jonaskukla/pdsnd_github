@@ -15,22 +15,22 @@ def invalid_input_message(mylist):
 def print_current_filter(cities, months, days):
     # prints the current filter settings
     print('Current filters:', end='')
-    categories = {'Cities': cities, 'Months': months, 'Days': days}
-    for cat in categories: #e.g. 'Cities'
+    filter_dict = {'Cities': cities, 'Months': months, 'Days': days}
+    for category in filter_dict: #e.g. 'Cities'
         # check if all cities are in filter.
-        all = True
-        for entry in categories[cat]: # entry can be e.g. chicago, new york city, washington
-            if categories[cat][entry] == False:
-                all = False # if any city is missing from the filter, 'all' is set to False
+        all_elements_are_in_filter = True
+        for element in filter_dict[category]: # element can be e.g. chicago, new york city, washington
+            if not filter_dict[category][element]: # check if any city is missing from the filter
+                all_elements_are_in_filter = False # if yes, 'all_elements_are_in_filter' is set to False
         # if all cities are in the filter, print "Cities: all,"
-        if all == True:
-            print('\n' + cat.capitalize() + ': all', end=', ') # e.g. 'Cities: all,'
+        if all_elements_are_in_filter:
+            print('\n' + category.capitalize() + ': all', end=', ') # e.g. 'Cities: all'
         # if only a part of the cities is in the filter, print only these city names
         else:
-            print('\n' + cat.capitalize(), end=': ') # e.g. 'Cities: '
-            for entry in categories[cat]:
-                if categories[cat][entry] == True: # if city is in filter
-                    print(entry.capitalize(), end=', ') # e.g. 'Chicago, '
+            print('\n' + category.capitalize(), end=': ') # e.g. 'Cities: '
+            for element in filter_dict[category]:
+                if filter_dict[category][element]: # if city is in filter
+                    print(element.capitalize(), end=', ') # e.g. 'Chicago, '
     print('\n')
 
 def change_filters(cities, months, days):
@@ -43,56 +43,56 @@ def change_filters(cities, months, days):
         (dict) days - a dictionary indicating for each day of week if it is in the filter (True) or not (False)
     """
 
-    categories = {'cities': cities, 'months': months, 'days': days} # auxiliary dictionary to refer from string names to dictionaries
+    filter_dict = {'cities': cities, 'months': months, 'days': days} # auxiliary dictionary to refer from string names to dictionaries
     names = {'cities': 'city', 'months': 'month', 'days': 'day'} # auxiliary dictionary just containing the singular forms
 
-    for cat in categories: # all following examples are for cities, e.g. cat = 'cities'
+    for category in filter_dict: # all following examples are for cities, e.g. category = 'cities'
         while True:
-            print('Enter n to apply no {} filter.'.format(names[cat]))
-            print('Enter a to add a {} to the filter.'.format(names[cat]))
-            print('Enter o to omit a {} from the filter.'.format(names[cat]))
-            print('Enter f to filter for one {} only.'.format(names[cat]))
+            print('Enter n to apply no {} filter.'.format(names[category]))
+            print('Enter a to add a {} to the filter.'.format(names[category]))
+            print('Enter o to omit a {} from the filter.'.format(names[category]))
+            print('Enter f to filter for one {} only.'.format(names[category]))
             change = input('Every other input will leave the filter unchanged: \n')
             print('\n')
             if change == 'n': # apply no filter
-                for entry in categories[cat]: # entry = e.g. chicago
-                    categories[cat][entry] = True # set dictionary value for every city to True
+                for element in filter_dict[category]: # element = e.g. chicago
+                    filter_dict[category][element] = True # set dictionary value for every city to True
             if change == 'a': # add a city to the filter
                 while True:
-                    add = input('To add a {} enter its name: '.format(names[cat])) # ask for city name
-                    if add.lower() in categories[cat]: # check if city name is valid
-                        categories[cat][add.lower()] = True # set dicitonary value for this city to True
+                    add_element = input('To add a {} enter its name: '.format(names[category])) # ask for city name
+                    if add_element.lower() in filter_dict[category]: # check if city name is valid
+                        filter_dict[category][add_element.lower()] = True # set dicitonary value for this city to True
                         break
                     else:
-                        invalid_input_message(categories[cat].keys()) # give user a complete list of valid inputs, e.g. cities
+                        invalid_input_message(filter_dict[category].keys()) # give user a complete list of valid inputs, e.g. cities
             if change == 'o': # omit a city from the filter
                 while True:
-                    omit = input('To omit a {} enter its name: '.format(names[cat])) # ask for city name
-                    if omit.lower() in categories[cat]: # check if city name is valid
-                        categories[cat][omit.lower()] = False # set dictionary value for this city to False
+                    omit_element = input('To omit a {} enter its name: '.format(names[category])) # ask for city name
+                    if omit_element.lower() in filter_dict[category]: # check if city name is valid
+                        filter_dict[category][omit_element.lower()] = False # set dictionary value for this city to False
                         allfalse = True
-                        for entry in categories[cat]: # entry can be e.g. chicago, new york city, washington
-                            if categories[cat][entry] == True:
+                        for element in filter_dict[category]: # element can be e.g. chicago, new york city, washington
+                            if filter_dict[category][element]:
                                 allfalse = False # if any city is in the filter, 'allfalse' is set to False
-                        if allfalse == True: # check if the omitted city was the last city in the filter
-                            categories[cat][omit.lower()] = True # add the omitted city back to the filter
-                            print('\nCannot omit the last {} from the filter'.format(names[cat]))
+                        if allfalse: # check if the omitted city was the last city in the filter
+                            filter_dict[category][omit_element.lower()] = True # add the omitted city back to the filter
+                            print('\nCannot omit the last {} from the filter'.format(names[category]))
                         break
                     else:
-                        invalid_input_message(categories[cat].keys()) # give user a complete list of valid inputs, e.g. cities
+                        invalid_input_message(filter_dict[category].keys()) # give user a complete list of valid inputs, e.g. cities
             if change == 'f': # allows user to change filter immediately to one city only
                 while True:
-                    filter = input('To filter for a {} enter its name: '.format(names[cat])) #ask for city name
-                    if filter.lower() in categories[cat]: #check if city name is valid
-                        for entry in categories[cat]:
-                            categories[cat][entry] = False #omit all cities from the filter
-                        categories[cat][filter.lower()] = True #add the specified city back to the filter
+                    filter_element = input('To filter for a {} enter its name: '.format(names[category])) #ask for city name
+                    if filter_element.lower() in filter_dict[category]: #check if city name is valid
+                        for element in filter_dict[category]:
+                            filter_dict[category][element] = False #omit all cities from the filter
+                        filter_dict[category][filter_element.lower()] = True #add the specified city back to the filter
                         break
                     else:
-                        invalid_input_message(categories[cat].keys())
+                        invalid_input_message(filter_dict[category].keys())
             print('\n')
             print_current_filter(cities, months, days) #print current filter settings to give user
-            proceed = input('Enter yes if you are done changing the {0} filter. Otherwise you will continue to change the {0} filter:\n'.format(names[cat]))
+            proceed = input('Enter yes if you are done changing the {0} filter. Otherwise you will continue to change the {0} filter:\n'.format(names[category]))
             print('\n')
             if proceed.lower() == 'yes':
                 break
@@ -115,7 +115,7 @@ def load_data(cities, months, days):
     # create new DataFrame and add data for all requested cities from the respective files
     df = pd.DataFrame()
     for city in cities:
-        if cities[city] == True:
+        if cities[city]:
             newdf = pd.read_csv(CITY_DATA[city])
             newdf['city'] = city #add an extra column to indicate from which city the respective lines in the DataFrame are
             df = df.append(newdf, sort=False)
@@ -131,14 +131,14 @@ def load_data(cities, months, days):
     monthtonumber = {'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6}
     # instead of True/False dictionary with all month names (e.g. 'january') as keys,
     # define 'months' as list of month numbers (e.g. 1) containing only months in filter
-    months = [monthtonumber[month] for month in months if months[month] == True]
+    months = [monthtonumber[month] for month in months if months[month]]
 
     df = df[df['month'].isin(months)] # filter df to contain only entries with month in filter
 
     daytonumber = {'sunday': 0, 'monday': 1, 'tuesday': 2, 'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6}
     # instead of True/False dictionary with all day names (e.g. 'sunday') as keys,
     # define 'days' as list of day numbers (e.g. 0) containing only days in filter
-    days = [daytonumber[day] for day in days if days[day] == True]
+    days = [daytonumber[day] for day in days if days[day]]
 
     df = df[df['day_of_week'].isin(days)] # filter df to contain only entries with day in filter
 
